@@ -1,5 +1,4 @@
-﻿using System;
-using Castle.MicroKernel;
+﻿using Castle.MicroKernel;
 using NserviceBus.Instrumentation.Interfaces;
 
 namespace NserviceBus.Instrumentation.Agent
@@ -10,8 +9,6 @@ namespace NserviceBus.Instrumentation.Agent
 
 		public IInstrumentationProvider Construct(string typeName)
 		{
-			//var fullTypeName = string.Format("NserviceBus.Instrumentation.Providers.{0}.I{0}InstrumentationProvider, NserviceBus.Instrumentation.Providers.{0}", typeName);
-
 			var key = typeName + "InstrumentationProvider";
 
 			return Kernel.Resolve<IInstrumentationProvider>(key);

@@ -1,6 +1,6 @@
 ﻿using Castle.MicroKernel.Registration;
-using NserviceBus.Instrumentation.Interfaces;
 using log4net;
+using System.Configuration;
 
 namespace NserviceBus.Instrumentation.Agent
 {
@@ -12,6 +12,7 @@ namespace NserviceBus.Instrumentation.Agent
 			container.Register(Component.For<ILog>().LifestylePerThread().UsingFactoryMethod((kernel, componentModel, creationContext) => LogManager.GetLogger(creationContext.Handler.ComponentModel.Implementation)));
 			container.Register(Component.For<InstrumentationConfig>().LifestyleSingleton().Instance(InstrumentationConfig.Config));
 			container.Register(Component.For<IProviderFactory>().LifestyleSingleton().UsingFactoryMethod(kernel => new ProviderFactory { Kernel = kernel}));
+			container.Register(Component.For<ConnectionStringSettings>().LifestyleSingleton().Instance(ConfigurationManager.ConnectionStrings["NSBInstrumentation"]));	
 		}
 	}
 }

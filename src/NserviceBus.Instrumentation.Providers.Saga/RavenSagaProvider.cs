@@ -27,7 +27,12 @@ namespace NserviceBus.Instrumentation.Providers.Saga
 
 				var types = JsonConvert.DeserializeObject<List<string>>(json);
 
-				sagaTypes = types.Where(t => t.EndsWith("Saga")).ToList();				
+				sagaTypes = types.Where(t => t.EndsWith("Saga")).ToList();
+
+				url = string.Format(SagaDocumentFormat, serviceName, "SagaUniqueIdentity");
+				json = client.DownloadString(url);
+
+				sagaUniqueIds = JObject.Parse(json) as dynamic;
 			}
 			catch (WebException) { }
 			catch (JsonSerializationException ex)
@@ -38,22 +43,39 @@ namespace NserviceBus.Instrumentation.Providers.Saga
 			return sagaTypes; 
 		}
 
-		public dynamic GetSagaData(string sagaType, string serviceName)
+		public List<SagaData> GetSagaData(string sagaType, string serviceName)
 		{
 			var client = new WebClient();
 
 			var url = string.Format(SagaDocumentFormat, serviceName, sagaType);
 			var json = string.Empty;
-
+			var returnVal = new List<SagaData>();
 			try
 			{
 				json = client.DownloadString(url);
 
-				var sagaData = JObject.Parse(json);
+				var sagaData = JObject.Parse(json) as dynamic;
 
 				Logger.InfoFormat("{0} {1} sagas found", sagaData["TotalResults"], sagaType);
 
-				return sagaData;
+				foreach (var saga in sagaData.Results)
+				{
+					var sagaId = saga["@metadata"]["@id"].Value.Replace(sagaType.ToLower() + "/", "");
+					var originator = saga.Originator;
+					var machineName = originator.Value.Split(new[] { '@' })[1];
+					var data = saga.ToString();
+
+					returnVal.Add(new SagaData
+						{
+							Data = data,
+							MachineName = machineName,
+							SagaId = sagaId,
+							ServiceName = serviceName,
+							SagaType = sagaType
+						});					
+				}
+
+				return returnVal;
 			}
 			catch (WebException ex)
 			{
@@ -71,6 +93,6 @@ namespace NserviceBus.Instrumentation.Providers.Saga
 	public interface IRavenSagaProvider
 	{
 		List<string> GetSagaTypes(string serviceName);
-		dynamic GetSagaData(string sagaType, string serviceName);
+		List<SagaData> GetSagaData(string sagaType, string serviceName);
 	}
 }
