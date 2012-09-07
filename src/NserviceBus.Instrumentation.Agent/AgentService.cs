@@ -91,8 +91,6 @@ namespace NserviceBus.Instrumentation.Agent
 			timer.Start();
 			
 			Setup();
-
-			timer_Elapsed(timer, null);
 		}
 		public void Stop() 
 		{
