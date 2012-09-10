@@ -1,4 +1,4 @@
-﻿USE [NSBInstrumentation]
+﻿USE [Instrumentation]
 GO
 
 IF OBJECT_ID('TimeoutDataValues') IS NULL BEGIN

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Messaging;
@@ -87,27 +86,24 @@ namespace NserviceBus.Instrumentation.Agent
 
 		public void Start() 
 		{
-			Console.WriteLine("Started");
 			timer.Start();
-			
 			Setup();
 
 			timer_Elapsed(timer, null);
 		}
+		
 		public void Stop() 
 		{
-			Console.WriteLine("Stopped");
 			timer.Stop();
 		}
 
 		public void Pause()
 		{
-			Console.WriteLine("Paused");
 			timer.Start();
 		}
+		
 		public void Continue()
 		{
-			Console.WriteLine("Continue");
 			timer.Stop();
 		}
 

@@ -1,4 +1,4 @@
-﻿USE [NSBInstrumentation]
+﻿USE [Instrumentation]
 GO
 
 if( object_id('[dbo].[TimeoutData_Insert]', 'P') is null) exec sp_executesql N'create procedure [dbo].[TimeoutData_Insert] as begin declare @a int; end'; 

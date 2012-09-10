@@ -1,6 +1,4 @@
-﻿USE [NSBInstrumentation]
-GO
-
+﻿USE [Instrumentation]
 IF OBJECT_ID('SagaDataValues') IS NULL BEGIN
 
 	CREATE TABLE [dbo].[SagaDataValues](
