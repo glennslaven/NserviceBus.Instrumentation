@@ -69,6 +69,7 @@
     <Compile Include="RavenSagaProvider.cs" />
     <Compile Include="SagaData.cs" />
     <Compile Include="SagaInstrumentationProvider.cs" />
+    <Compile Include="TimeoutData.cs" />
     <Compile Include="WindsorInstaller.cs" />
   </ItemGroup>
   <ItemGroup>

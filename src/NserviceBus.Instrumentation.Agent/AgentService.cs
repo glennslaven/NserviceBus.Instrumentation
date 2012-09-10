@@ -57,7 +57,7 @@ namespace NserviceBus.Instrumentation.Agent
 
 				foreach (var serviceName in services)
 				{
-					if (!Config.Services.Blacklist.Contains(serviceName))
+					if (Config.Services.Whitelist.Count > 0 && Config.Services.Whitelist.Contains(serviceName) && !Config.Services.Blacklist.Contains(serviceName))
 					{
 						nserviceBusServices.Add(new NserviceBusService
 							{

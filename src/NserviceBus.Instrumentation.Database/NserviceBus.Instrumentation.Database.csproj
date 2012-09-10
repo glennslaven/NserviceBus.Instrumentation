@@ -42,7 +42,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Procedures\TimeoutData_Insert.sql" />
     <Content Include="Procedures\SagaData_Insert.sql" />
+    <Content Include="Tables\TimeoutDataValues.sql" />
+    <Content Include="Tables\SagaDataValues.sql" />
+    <Content Include="Tables\TimeoutData.sql" />
     <Content Include="Tables\SagaData.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
