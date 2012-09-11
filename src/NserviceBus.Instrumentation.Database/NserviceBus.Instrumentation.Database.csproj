@@ -42,6 +42,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Procedures\Web_ServiceController_Detail.sql" />
     <Content Include="Procedures\TimeoutData_Insert.sql" />
     <Content Include="Procedures\SagaData_Insert.sql" />
     <Content Include="Tables\TimeoutDataValues.sql" />

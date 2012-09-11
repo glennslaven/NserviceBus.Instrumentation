@@ -1,0 +1,23 @@
+﻿@model NserviceBus.Instrumentation.Dashboard.Models.Home.IndexViewModel
+
+@{
+	ViewBag.Title = "title";
+}
+
+<h2>Machines</h2>
+
+<ul data-bind="foreach: Machines">
+	<li>
+		<a data-bind="text: Name, click: toggleServices, attr: { href: '' }"></a>
+		<ul class="service-list" data-bind="visible: ShowServices, foreach: Services">
+			<li><a data-bind="text: Name, attr: { href: '/Service/Detail/' + $parent.Name + '?service=' + Name }"></a></li>
+		</ul>
+	</li>
+</ul>
+
+@section scripts
+{
+	<script type="text/javascript">
+	    NserviceBus.Instrumentation.Dashboard.Index.Bind(@(Model.JsonModel));
+	</script>
+}
