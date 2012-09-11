@@ -4,4 +4,25 @@
 	ViewBag.Title = "title";
 }
 
-<h2>title</h2>
+<h2>@Model.ServiceName on <code>@Model.MachineName</code> </h2>
+<div class="tabbable">
+	<ul data-bind="foreach: Sagas" class="nav nav-tabs">
+		<li data-bind="css: { active: $root.selected() === $data }" class="">
+			<a data-bind="click: $root.selected, text: SagaType, attr: { href: '#tab' + SagaDataId }" data-toggle="tab"></a>			
+		</li>
+	</ul>
+	<div class="tab-content" data-bind="foreach: Sagas">
+		<div data-bind="attr: { id: 'tab' + SagaDataId }, css: { active: $root.selected() === $data }" class="tab-pane">
+			<ul data-bind="foreach: Values">
+				<li><span data-bind="text: KeyName"></span>: <span data-bind="text: KeyValue"></span></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+@section scripts
+{
+	<script type="text/javascript">
+	    NserviceBus.Instrumentation.Dashboard.Service.Detail.Bind(@(Model.JsonModel));
+	</script>
+}

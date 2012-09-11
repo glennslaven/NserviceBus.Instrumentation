@@ -29,7 +29,11 @@ namespace NserviceBus.Instrumentation.Dashboard.Models.DataProviders.Service
 		{
 			using (var cn = GetConnection())
 			{
-				var model = new DetailDataModel();
+				var model = new DetailDataModel
+					{
+						MachineName = machineName,
+						ServiceName = serviceName
+					};
 
 				using(var multi = cn.QueryMultiple("Web_ServiceController_Detail", new { machineName, serviceName }, commandType:CommandType.StoredProcedure))
 				{

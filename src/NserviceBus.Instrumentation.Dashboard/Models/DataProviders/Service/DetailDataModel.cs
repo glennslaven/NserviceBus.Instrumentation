@@ -6,6 +6,8 @@ namespace NserviceBus.Instrumentation.Dashboard.Models.DataProviders.Service
 	public class DetailDataModel
 	{
 		public List<SagaClass> Sagas { get; set; }
+		public string MachineName { get; set; }
+		public string ServiceName { get; set; }
 
 		public class SagaClass
 		{
