@@ -152,7 +152,7 @@
     <Compile Include="Models\Home\IndexViewModel.cs" />
     <Compile Include="Models\Service\DetailViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="Scripts\views\init.js" />
+    <Content Include="Scripts\views\allinclude.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\bootstrap-responsive.css" />
