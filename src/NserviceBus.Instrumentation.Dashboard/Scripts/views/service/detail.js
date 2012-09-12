@@ -49,7 +49,7 @@ NserviceBus.Instrumentation.Dashboard.Service.Detail = (function () {
                     }
                 }, self);
 
-                self.selected = ko.computed(function () {
+                self.Selected = ko.computed(function () {
                     if (self.SelectedManually() && ko.utils.arrayIndexOf(self.DisplaySagas(), self.SelectedManually()) > -1) {
                         return self.SelectedManually();
                     } else {

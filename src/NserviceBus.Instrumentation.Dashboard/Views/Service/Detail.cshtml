@@ -22,12 +22,12 @@
 
 <div class="tabbable tabs-left">
 	<ul data-bind="foreach: DisplaySagas" class="nav nav-tabs">
-		<li data-bind="css: { active: $root.selected() === $data }" class="">
+		<li data-bind="css: { active: $root.Selected() === $data }" class="">
 			<a data-bind="click: $root.SelectedManually, text: SagaType, attr: { href: '#tab' + SagaDataId }" data-toggle="tab"></a>
 		</li>
 	</ul>
 	<div class="tab-content" data-bind="foreach: Sagas">
-		<div data-bind="attr: { id: 'tab' + SagaDataId }, css: { active: $root.selected() === $data }" class="tab-pane">
+		<div data-bind="attr: { id: 'tab' + SagaDataId }, css: { active: $root.Selected() === $data }" class="tab-pane">
 			<dl data-bind="foreach: Values.items" class="dl-horizontal">
 				<dt data-bind="text: key, attr: { title: key }"></dt>
 				<dd data-bind="text: value"></dd>
