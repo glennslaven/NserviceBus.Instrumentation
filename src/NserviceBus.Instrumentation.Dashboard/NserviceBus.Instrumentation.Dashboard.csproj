@@ -152,6 +152,7 @@
     <Compile Include="Models\Home\IndexViewModel.cs" />
     <Compile Include="Models\Service\DetailViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Scripts\views\init.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\bootstrap-responsive.css" />
@@ -220,6 +221,7 @@
     <Content Include="Scripts\knockout.mapping.min.js">
       <DependentUpon>knockout.mapping.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\knockout.observableDictionary.js" />
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
     <Content Include="Scripts\views\home\index.js" />
     <Content Include="Scripts\views\service\detail.js" />

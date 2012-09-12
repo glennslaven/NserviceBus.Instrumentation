@@ -6,6 +6,7 @@ namespace NserviceBus.Instrumentation.Dashboard.Models.DataProviders.Service
 	public class DetailDataModel
 	{
 		public List<SagaClass> Sagas { get; set; }
+
 		public string MachineName { get; set; }
 		public string ServiceName { get; set; }
 
@@ -13,7 +14,8 @@ namespace NserviceBus.Instrumentation.Dashboard.Models.DataProviders.Service
 		{
 			public SagaClass()
 			{
-				Values = new List<KeyValueClass>();
+				Values = new Dictionary<string, string>();
+				Timeouts = new List<TimeoutClass>();
 			}
 
 			public Guid SagaDataId { get; set; }
@@ -21,8 +23,22 @@ namespace NserviceBus.Instrumentation.Dashboard.Models.DataProviders.Service
 			public string SagaType { get; set; }
 			public string MachineName { get; set; }
 			public string ServiceName { get; set; }
-			public List<KeyValueClass> Values { get; set; }
+			public Dictionary<string, string> Values { get; set; }
+			public List<TimeoutClass> Timeouts { get; set; }
 			
+		}
+
+		public class TimeoutClass
+		{
+			public TimeoutClass()
+			{
+				Values = new Dictionary<string, string>();
+			}
+
+			public Guid TimeoutDataId { get; set; }
+			public DateTime ExpiresUtc { get; set; }
+			public Guid SagaId { get; set; }
+			public Dictionary<string, string> Values { get; set; }
 		}
 
 		public class KeyValueClass

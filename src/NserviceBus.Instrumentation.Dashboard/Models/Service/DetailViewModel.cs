@@ -7,15 +7,16 @@ namespace NserviceBus.Instrumentation.Dashboard.Models.Service
 	public class DetailViewModel
 	{
 		public List<SagaClass> Sagas { get; set; }
+
 		public string MachineName { get; set; }
 		public string ServiceName { get; set; }
-		public MvcHtmlString JsonModel { get; set; }
 
 		public class SagaClass
 		{
 			public SagaClass()
 			{
-				Values = new List<KeyValueClass>();
+				Values = new Dictionary<string, string>();
+				Timeouts = new List<TimeoutClass>();
 			}
 
 			public Guid SagaDataId { get; set; }
@@ -23,14 +24,24 @@ namespace NserviceBus.Instrumentation.Dashboard.Models.Service
 			public string SagaType { get; set; }
 			public string MachineName { get; set; }
 			public string ServiceName { get; set; }
-			public List<KeyValueClass> Values { get; set; }
+			public Dictionary<string, string> Values { get; set; }
+			public List<TimeoutClass> Timeouts { get; set; }
 
 		}
 
-		public class KeyValueClass
+		public class TimeoutClass
 		{
-			public string KeyName { get; set; }
-			public string KeyValue { get; set; }
+			public TimeoutClass()
+			{
+				Values = new Dictionary<string, string>();
+			}
+
+			public Guid TimeoutDataId { get; set; }
+			public DateTime ExpiresUtc { get; set; }
+			public Guid SagaId { get; set; }
+			public Dictionary<string, string> Values { get; set; }
 		}
+
+		public MvcHtmlString JsonModel { get; set; }
 	}
 }

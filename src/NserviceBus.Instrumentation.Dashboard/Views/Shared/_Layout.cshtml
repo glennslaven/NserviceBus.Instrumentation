@@ -7,12 +7,12 @@
     @Styles.Render("~/Content/themes/base/css", "~/Content/css")
 </head>
 <body>
-    @RenderBody()
+@RenderBody()
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/knockout")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/viewscripts")
-    @RenderSection("scripts", required: false)
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/knockout")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/viewscripts")    
+@RenderSection("scripts", required: false)
 </body>
 </html>

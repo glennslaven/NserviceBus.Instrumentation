@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using AutoMapper;
@@ -15,13 +16,17 @@ namespace NserviceBus.Instrumentation.Dashboard.Controllers
 		{
 			Mapper.CreateMap<DetailDataModel, DetailViewModel>();
 			Mapper.CreateMap<DetailDataModel.SagaClass, DetailViewModel.SagaClass>();
-			Mapper.CreateMap<DetailDataModel.KeyValueClass, DetailViewModel.KeyValueClass>();
+			Mapper.CreateMap<DetailDataModel.TimeoutClass, DetailViewModel.TimeoutClass>();
 		}
 
         public ActionResult Detail(string id, string service)
         {
 			var dataModel = DataProvider.GetDetailModel(id, service);
 			var viewModel = Mapper.Map<DetailViewModel>(dataModel);
+
+			viewModel.Sagas.ForEach(s => 
+				s.Timeouts.ForEach(t =>
+					t.Values.Add("Expires", t.ExpiresUtc.ToLocalTime().ToString("dd MMM yyyy HH:mm:ss"))));
 
 			var serializer = new JavaScriptSerializer();
 			serializer.MaxJsonLength = Int32.MaxValue;

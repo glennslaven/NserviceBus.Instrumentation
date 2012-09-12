@@ -4,18 +4,46 @@
 	ViewBag.Title = "title";
 }
 
-<h2>@Model.ServiceName on <code>@Model.MachineName</code> </h2>
-<div class="tabbable">
-	<ul data-bind="foreach: Sagas" class="nav nav-tabs">
+<h1>@Model.ServiceName <small>@Model.MachineName</small> </h1>
+
+<div class="row">
+	<div class="span6">
+		<select data-bind="foreach: Sagas()[0].Values.items, value: FilterKeyName">
+			<option data-bind="text: key, attr: { value: key }"></option>
+		</select>
+        <input type="text" data-bind="value: FilterText"/>
+	</div>   
+    
+	<div class="span3">
+		<button class="btn btn-primary">Filter</button>
+		<button class="btn btn-inverse" data-bind="click: clearFilter">Clear</button>
+	</div>
+</div>
+
+<div class="tabbable tabs-left">
+	<ul data-bind="foreach: DisplaySagas" class="nav nav-tabs">
 		<li data-bind="css: { active: $root.selected() === $data }" class="">
-			<a data-bind="click: $root.selected, text: SagaType, attr: { href: '#tab' + SagaDataId }" data-toggle="tab"></a>			
+			<a data-bind="click: $root.SelectedManually, text: SagaType, attr: { href: '#tab' + SagaDataId }" data-toggle="tab"></a>
 		</li>
 	</ul>
 	<div class="tab-content" data-bind="foreach: Sagas">
 		<div data-bind="attr: { id: 'tab' + SagaDataId }, css: { active: $root.selected() === $data }" class="tab-pane">
-			<ul data-bind="foreach: Values">
-				<li><span data-bind="text: KeyName"></span>: <span data-bind="text: KeyValue"></span></li>
-			</ul>
+			<dl data-bind="foreach: Values.items" class="dl-horizontal">
+				<dt data-bind="text: key, attr: { title: key }"></dt>
+				<dd data-bind="text: value"></dd>
+			</dl>
+            
+			<div>
+				<h4>Timeouts Scheduled</h4>
+				<ul data-bind="foreach: Timeouts" class="unstyled">
+					<li>
+						<dl class="dl-horizontal" data-bind="foreach: Values.items">
+				            <dt data-bind="text: key, attr: { title: key }"></dt>
+				            <dd data-bind="text: value"></dd>
+						</dl>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
 </div>

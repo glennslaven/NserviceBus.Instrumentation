@@ -1,7 +1,4 @@
-﻿/// <reference path="../../knockout-2.0.0.debug.js" />
-
-
-if (!NserviceBus) var NserviceBus = {};
+﻿if (!NserviceBus) var NserviceBus = {};
 if (!NserviceBus.Instrumentation) NserviceBus.Instrumentation = {};
 if (!NserviceBus.Instrumentation.Dashboard) NserviceBus.Instrumentation.Dashboard = {};
 if (!NserviceBus.Instrumentation.Dashboard.Service) NserviceBus.Instrumentation.Dashboard.Service = {};
@@ -10,28 +7,56 @@ NserviceBus.Instrumentation.Dashboard.Service.Detail = (function () {
 
     return {
         Bind: function (jsonModel) {
+           var sagasMapping = {
+               'Sagas': {
+                   create: function (options) {
+                        
+                       var data = ko.mapping.fromJS(options.data, timoutsMapping);
+                       data.ShowValues = ko.observable(false);
+                       data.FilteredOut = ko.observable(false);
+                       data.Values = ko.observableDictionary(options.data.Values);
+                       return data;
+                   }
+               },
+           };
             
+           var timoutsMapping = {
+               'Timeouts': {
+                   create: function (options) {
+                       var data = ko.mapping.fromJS(options.data);
+                       data.Values = ko.observableDictionary(options.data.Values);
+                       return data;
+                   }
+               }
+           };
 
-           var mapping = {
-                'Sagas': {
-                    create: function (options) {
-                        
-                        var data = options.data;
-                        data.ShowValues = ko.observable(false);
-                        
-                        return data;
-                    }
-                }
-            };
-
-            function viewModel() {
+           function viewModel(json) {
                 var self = this;
                 
-                
+                self.Sagas = ko.mapping.fromJS(json, sagasMapping).Sagas;
+                self.SelectedManually = ko.observable();               
+                self.FilterText = ko.observable();
+                self.FilterKeyName = ko.observable();                                
 
-                self.Sagas = ko.mapping.fromJS(jsonModel, mapping).Sagas;
-                self.selected = ko.observable(self.Sagas()[0]);
-                
+                self.DisplaySagas = ko.computed(function () {
+                    var filter = self.FilterText();
+                    if (!filter) {
+                        return this.Sagas();
+                    } else {
+                        return ko.utils.arrayFilter(this.Sagas(), function (item) {
+                            return item.Values.get(self.FilterKeyName())().startsWith(filter.toLowerCase(), true);
+                        });
+                    }
+                }, self);
+
+                self.selected = ko.computed(function () {
+                    if (self.SelectedManually() && ko.utils.arrayIndexOf(self.DisplaySagas(), self.SelectedManually()) > -1) {
+                        return self.SelectedManually();
+                    } else {
+                        return self.DisplaySagas()[0];
+                    }                    
+                });
+
                 self.toggleValues = function (saga) {
 
                     var currentState = saga.ShowValues();
@@ -42,9 +67,13 @@ NserviceBus.Instrumentation.Dashboard.Service.Detail = (function () {
 
                     saga.ShowValues(!currentState);
                 };
+               
+                self.clearFilter = function () {
+                    self.FilterText('');
+                };
             };
 
-            ko.applyBindings(new viewModel());
+           ko.applyBindings(new viewModel(jsonModel));
         }
     };
 })();
