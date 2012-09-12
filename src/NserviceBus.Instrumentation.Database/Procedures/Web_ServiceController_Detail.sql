@@ -16,12 +16,12 @@ AS
 	) as s	
 	where RecordIndex = 1;
 	
-	SELECT s.SagaDataId, s.SagaId, SagaType, ServiceName, MachineName, sv.SagaDataId, KeyName, KeyValue
+	SELECT s.SagaDataId, s.SagaId, SagaType, ServiceName, MachineName, sv.SagaDataId, KeyName 'Key', KeyValue 'Value'
 	FROM SagaData s
 	JOIN SagaDataValues sv ON (s.SagaDataId = sv.SagaDataId)
 	JOIN #SagaDataIds sid ON (s.SagaDataId = sid.SagaDataId);
 	
-	SELECT t.TimeoutDataId, t.SagaId, t.ExpiresUtc, td.TimeoutDataId, td.KeyName, td.KeyValue
+	SELECT t.TimeoutDataId, t.SagaId, t.ExpiresUtc, td.TimeoutDataId, td.KeyName 'Key', td.KeyValue 'Value'
 	FROM
 	(
 		SELECT TimeoutDataId, td.SagaId, ExpiresUtc, ROW_NUMBER() OVER (PARTITION BY DocumentId ORDER BY CreatedOnUtc DESC) as RecordIndex
