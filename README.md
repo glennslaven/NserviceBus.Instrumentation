@@ -22,3 +22,6 @@ It's not feature complete and it has bugs.  I would appreciate any feedback/fork
 1. [TopShelf](https://github.com/Topshelf/Topshelf) - Seriously, Microsoft should just abandon its windows service application type in Visual Studio & point everyone to this project, it makes windows services usable!
 2. [Dapper](https://github.com/SamSaffron/dapper-dot-net)
 3. [Castle Windsor](https://github.com/castleproject/Castle.Windsor-READONLY)
+4. [Automapper](https://github.com/AutoMapper/AutoMapper)
+5. [Knockout](https://github.com/SteveSanderson/knockout)
+6. [Bootstrap](http://twitter.github.com/bootstrap/)
