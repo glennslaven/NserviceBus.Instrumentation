@@ -1,6 +1,6 @@
 ﻿using System.Web.Optimization;
 
-namespace NserviceBus.Instrumentation.Dashboard
+namespace NServiceBus.Instrumentation.Dashboard
 {
 	public class BundleConfig
 	{

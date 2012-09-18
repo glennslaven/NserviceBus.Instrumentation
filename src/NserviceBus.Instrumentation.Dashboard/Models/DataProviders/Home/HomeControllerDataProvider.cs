@@ -4,7 +4,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using Dapper;
 
-namespace NserviceBus.Instrumentation.Dashboard.Models.DataProviders.Home
+namespace NServiceBus.Instrumentation.Dashboard.Models.DataProviders.Home
 {
 	public class HomeControllerDataProvider : IHomeControllerDataProvider
 	{

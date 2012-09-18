@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.MicroKernel;
 
-namespace NserviceBus.Instrumentation.Dashboard.App_Start
+namespace NServiceBus.Instrumentation.Dashboard.App_Start
 {
 	public class WindsorControllerFactory : DefaultControllerFactory
 	{

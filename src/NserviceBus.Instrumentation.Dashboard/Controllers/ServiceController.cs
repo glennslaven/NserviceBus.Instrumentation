@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using AutoMapper;
-using NserviceBus.Instrumentation.Dashboard.Models.DataProviders.Service;
-using NserviceBus.Instrumentation.Dashboard.Models.Service;
+using NServiceBus.Instrumentation.Dashboard.Models.DataProviders.Service;
+using NServiceBus.Instrumentation.Dashboard.Models.Service;
 
-namespace NserviceBus.Instrumentation.Dashboard.Controllers
+namespace NServiceBus.Instrumentation.Dashboard.Controllers
 {
     public class ServiceController : Controller
     {

@@ -2,10 +2,10 @@
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using AutoMapper;
-using NserviceBus.Instrumentation.Dashboard.Models.DataProviders.Home;
-using NserviceBus.Instrumentation.Dashboard.Models.Home;
+using NServiceBus.Instrumentation.Dashboard.Models.DataProviders.Home;
+using NServiceBus.Instrumentation.Dashboard.Models.Home;
 
-namespace NserviceBus.Instrumentation.Dashboard.Controllers
+namespace NServiceBus.Instrumentation.Dashboard.Controllers
 {
     public class HomeController : Controller
     {

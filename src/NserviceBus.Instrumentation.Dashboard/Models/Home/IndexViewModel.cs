@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace NserviceBus.Instrumentation.Dashboard.Models.Home
+namespace NServiceBus.Instrumentation.Dashboard.Models.Home
 {
 	public class IndexViewModel
 	{

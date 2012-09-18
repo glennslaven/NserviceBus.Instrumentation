@@ -4,7 +4,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 
-namespace NserviceBus.Instrumentation.Agent
+namespace NServiceBus.Instrumentation.Agent
 {
 	public class InstrumentationConfig : ConfigurationSection
 	{

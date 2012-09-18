@@ -7,10 +7,10 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
-using NserviceBus.Instrumentation.Interfaces;
+using NServiceBus.Instrumentation.Interfaces;
 using log4net;
 
-namespace NserviceBus.Instrumentation.Providers.Saga
+namespace NServiceBus.Instrumentation.Providers.Saga
 {
 	internal class SagaInstrumentationProvider : ISagaInstrumentationProvider
 	{

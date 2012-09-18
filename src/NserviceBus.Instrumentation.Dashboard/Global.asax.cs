@@ -3,9 +3,9 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Castle.Windsor.Installer;
-using NserviceBus.Instrumentation.Dashboard.App_Start;
+using NServiceBus.Instrumentation.Dashboard.App_Start;
 
-namespace NserviceBus.Instrumentation.Dashboard
+namespace NServiceBus.Instrumentation.Dashboard
 {
 	public class MvcApplication : HttpApplication
 	{

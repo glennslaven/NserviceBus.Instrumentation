@@ -3,10 +3,10 @@ using System.Configuration;
 using System.Linq;
 using System.Messaging;
 using System.Timers;
-using NserviceBus.Instrumentation.Interfaces;
+using NServiceBus.Instrumentation.Interfaces;
 using log4net;
 
-namespace NserviceBus.Instrumentation.Agent
+namespace NServiceBus.Instrumentation.Agent
 {
 	internal class AgentService : IAgentService
 	{

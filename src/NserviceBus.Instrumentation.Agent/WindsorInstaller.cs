@@ -2,7 +2,7 @@
 using log4net;
 using System.Configuration;
 
-namespace NserviceBus.Instrumentation.Agent
+namespace NServiceBus.Instrumentation.Agent
 {
 	public class WindsorInstaller : IWindsorInstaller
 	{

@@ -6,7 +6,7 @@ using System.Management;
 using System.Reflection;
 using NServiceBus;
 
-namespace NserviceBus.Instrumentation.Agent
+namespace NServiceBus.Instrumentation.Agent
 {
 	public class ServiceLoader
 	{

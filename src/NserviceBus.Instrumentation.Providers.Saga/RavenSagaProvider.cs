@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 using log4net;
 using Formatting = Newtonsoft.Json.Formatting;
 
-namespace NserviceBus.Instrumentation.Providers.Saga
+namespace NServiceBus.Instrumentation.Providers.Saga
 {
 	internal class RavenSagaProvider : IRavenSagaProvider
 	{

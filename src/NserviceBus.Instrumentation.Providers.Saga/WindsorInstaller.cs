@@ -1,6 +1,6 @@
 ﻿using Castle.MicroKernel.Registration;
 
-namespace NserviceBus.Instrumentation.Providers.Saga
+namespace NServiceBus.Instrumentation.Providers.Saga
 {
 	public class WindsorInstaller : IWindsorInstaller
 	{

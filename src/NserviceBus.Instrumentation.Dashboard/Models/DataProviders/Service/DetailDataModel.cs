@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NserviceBus.Instrumentation.Dashboard.Models.DataProviders.Service
+namespace NServiceBus.Instrumentation.Dashboard.Models.DataProviders.Service
 {
 	public class DetailDataModel
 	{

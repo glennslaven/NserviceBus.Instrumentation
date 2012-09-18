@@ -1,7 +1,7 @@
 ﻿using Castle.MicroKernel;
-using NserviceBus.Instrumentation.Interfaces;
+using NServiceBus.Instrumentation.Interfaces;
 
-namespace NserviceBus.Instrumentation.Agent
+namespace NServiceBus.Instrumentation.Agent
 {
 	public class ProviderFactory : IProviderFactory
 	{

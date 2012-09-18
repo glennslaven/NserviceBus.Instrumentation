@@ -1,9 +1,9 @@
 ﻿using Castle.Windsor;
 using Castle.Windsor.Installer;
-using NserviceBus.Instrumentation.Providers.Saga;
+using NServiceBus.Instrumentation.Providers.Saga;
 using Topshelf;
 
-namespace NserviceBus.Instrumentation.Agent
+namespace NServiceBus.Instrumentation.Agent
 {
 	public class Program
 	{

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace NserviceBus.Instrumentation.Dashboard.Models.Service
+namespace NServiceBus.Instrumentation.Dashboard.Models.Service
 {
 	public class DetailViewModel
 	{

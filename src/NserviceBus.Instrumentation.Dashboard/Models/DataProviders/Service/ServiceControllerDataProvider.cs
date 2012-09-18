@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 
-namespace NserviceBus.Instrumentation.Dashboard.Models.DataProviders.Service
+namespace NServiceBus.Instrumentation.Dashboard.Models.DataProviders.Service
 {
 	public class ServiceControllerDataProvider : IServiceControllerDataProvider
 	{

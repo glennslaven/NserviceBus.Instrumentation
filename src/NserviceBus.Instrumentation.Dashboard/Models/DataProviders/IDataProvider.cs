@@ -1,4 +1,4 @@
-﻿namespace NserviceBus.Instrumentation.Dashboard.Models.DataProviders
+﻿namespace NServiceBus.Instrumentation.Dashboard.Models.DataProviders
 {
 	public interface IDataProvider
 	{

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NserviceBus.Instrumentation.Interfaces
+namespace NServiceBus.Instrumentation.Interfaces
 {
 	public interface IInstrumentationProvider
 	{

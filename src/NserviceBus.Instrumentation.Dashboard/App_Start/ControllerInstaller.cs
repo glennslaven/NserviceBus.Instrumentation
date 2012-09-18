@@ -4,9 +4,9 @@ using System.Web.Mvc;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using NserviceBus.Instrumentation.Dashboard.Models.DataProviders;
+using NServiceBus.Instrumentation.Dashboard.Models.DataProviders;
 
-namespace NserviceBus.Instrumentation.Dashboard.App_Start
+namespace NServiceBus.Instrumentation.Dashboard.App_Start
 {
 	public class ControllerInstaller : IWindsorInstaller
 	{

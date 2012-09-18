@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace NserviceBus.Instrumentation.Dashboard
+namespace NServiceBus.Instrumentation.Dashboard
 {
 	public class FilterConfig
 	{

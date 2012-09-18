@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NserviceBus.Instrumentation.Dashboard.Models.DataProviders.Home
+namespace NServiceBus.Instrumentation.Dashboard.Models.DataProviders.Home
 {
 	public class IndexDataModel
 	{

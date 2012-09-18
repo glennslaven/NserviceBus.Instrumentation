@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NserviceBus.Instrumentation.Providers.Saga
+namespace NServiceBus.Instrumentation.Providers.Saga
 {
 	public class SagaData
 	{
