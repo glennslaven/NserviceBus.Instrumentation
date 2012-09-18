@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Instrumentation
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BB03FBC8-7D2B-4B2E-BF41-5BE347F87351}"
 	ProjectSection(SolutionItems) = preProject
-		..\README = ..\README
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Instrumentation.Database", "NserviceBus.Instrumentation.Database\NServiceBus.Instrumentation.Database.csproj", "{EB7315E0-758E-42DD-9565-BAC9F67858F0}"
