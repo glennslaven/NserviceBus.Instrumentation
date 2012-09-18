@@ -1,1 +1,3 @@
-The place with the thing
+Two main projects
+	- NserviceBus.Instrumentation.Agent: A Windows service that can be installed on each machine that runs NserviceBus services
+	- NserviceBus.Instrumentation.Dashboard: An MVC website that will load the data collected by the agents.
