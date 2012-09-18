@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="NserviceBus.Instrumentation.Dashboard.MvcApplication" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="NServiceBus.Instrumentation.Dashboard.MvcApplication" Language="C#" %>

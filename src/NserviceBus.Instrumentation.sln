@@ -1,20 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NserviceBus.Instrumentation.Agent", "NserviceBus.Instrumentation.Agent\NserviceBus.Instrumentation.Agent.csproj", "{AE76F876-8B66-4D4C-9429-7D9A30E379E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Instrumentation.Agent", "NserviceBus.Instrumentation.Agent\NServiceBus.Instrumentation.Agent.csproj", "{AE76F876-8B66-4D4C-9429-7D9A30E379E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NserviceBus.Instrumentation.Interfaces", "NserviceBus.Instrumentation.Interfaces\NserviceBus.Instrumentation.Interfaces.csproj", "{22FBE544-8410-4131-8C49-6EE11270E34F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Instrumentation.Interfaces", "NserviceBus.Instrumentation.Interfaces\NServiceBus.Instrumentation.Interfaces.csproj", "{22FBE544-8410-4131-8C49-6EE11270E34F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NserviceBus.Instrumentation.Providers.Saga", "NserviceBus.Instrumentation.Providers.Saga\NserviceBus.Instrumentation.Providers.Saga.csproj", "{C43234BD-5B7B-4F13-9C10-0384488CFCDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Instrumentation.Providers.Saga", "NserviceBus.Instrumentation.Providers.Saga\NServiceBus.Instrumentation.Providers.Saga.csproj", "{C43234BD-5B7B-4F13-9C10-0384488CFCDC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BB03FBC8-7D2B-4B2E-BF41-5BE347F87351}"
 	ProjectSection(SolutionItems) = preProject
 		..\README = ..\README
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NserviceBus.Instrumentation.Database", "NserviceBus.Instrumentation.Database\NserviceBus.Instrumentation.Database.csproj", "{EB7315E0-758E-42DD-9565-BAC9F67858F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Instrumentation.Database", "NserviceBus.Instrumentation.Database\NServiceBus.Instrumentation.Database.csproj", "{EB7315E0-758E-42DD-9565-BAC9F67858F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NserviceBus.Instrumentation.Dashboard", "NserviceBus.Instrumentation.Dashboard\NserviceBus.Instrumentation.Dashboard.csproj", "{33072A31-657C-4CEB-8035-1BB324816591}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Instrumentation.Dashboard", "NserviceBus.Instrumentation.Dashboard\NServiceBus.Instrumentation.Dashboard.csproj", "{33072A31-657C-4CEB-8035-1BB324816591}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,18 +22,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{22FBE544-8410-4131-8C49-6EE11270E34F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{22FBE544-8410-4131-8C49-6EE11270E34F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{22FBE544-8410-4131-8C49-6EE11270E34F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{22FBE544-8410-4131-8C49-6EE11270E34F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{33072A31-657C-4CEB-8035-1BB324816591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33072A31-657C-4CEB-8035-1BB324816591}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33072A31-657C-4CEB-8035-1BB324816591}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33072A31-657C-4CEB-8035-1BB324816591}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AE76F876-8B66-4D4C-9429-7D9A30E379E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AE76F876-8B66-4D4C-9429-7D9A30E379E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE76F876-8B66-4D4C-9429-7D9A30E379E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE76F876-8B66-4D4C-9429-7D9A30E379E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22FBE544-8410-4131-8C49-6EE11270E34F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22FBE544-8410-4131-8C49-6EE11270E34F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22FBE544-8410-4131-8C49-6EE11270E34F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22FBE544-8410-4131-8C49-6EE11270E34F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C43234BD-5B7B-4F13-9C10-0384488CFCDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C43234BD-5B7B-4F13-9C10-0384488CFCDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C43234BD-5B7B-4F13-9C10-0384488CFCDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -42,6 +38,10 @@ Global
 		{EB7315E0-758E-42DD-9565-BAC9F67858F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB7315E0-758E-42DD-9565-BAC9F67858F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB7315E0-758E-42DD-9565-BAC9F67858F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33072A31-657C-4CEB-8035-1BB324816591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33072A31-657C-4CEB-8035-1BB324816591}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33072A31-657C-4CEB-8035-1BB324816591}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33072A31-657C-4CEB-8035-1BB324816591}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
