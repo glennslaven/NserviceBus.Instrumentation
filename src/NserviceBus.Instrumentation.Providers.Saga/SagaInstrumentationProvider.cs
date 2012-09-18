@@ -45,7 +45,7 @@ namespace NServiceBus.Instrumentation.Providers.Saga
 						foreach (var sagaType in sagaTypes)
 						{
 							var data = RavenSagaProvider.GetSagaData(sagaType, serviceName);
-							Parallel.ForEach(data, d => d.SagaDataId = Guid.NewGuid());
+							data.ForEach(d => { if (d != null) d.SagaDataId = Guid.NewGuid(); });
 
 							var insertParams = data.Select(i => new { i.SagaDataId, i.SagaType, i.SagaId, i.ServiceName, i.MachineName, i.Data });
 							Parallel.ForEach(insertParams, p =>

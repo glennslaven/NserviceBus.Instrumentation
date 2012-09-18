@@ -58,9 +58,9 @@ namespace NServiceBus.Instrumentation.Providers.Saga
 
 				Logger.InfoFormat("{0} {1} sagas found", sagaData["TotalResults"], sagaType);
 
-				IEnumerable<dynamic> results = sagaData.Results as IEnumerable<dynamic>;
+				var results = (sagaData.Results as IEnumerable<dynamic>).ToList();
 
-				Parallel.ForEach(results, saga =>
+				results.ForEach(saga =>
 					{
 						var sagaId = saga["@metadata"]["@id"].Value.Replace(sagaType.ToLower() + "/", "");
 						var originator = saga.Originator;
@@ -126,7 +126,7 @@ namespace NServiceBus.Instrumentation.Providers.Saga
 					var jsonText = JsonConvert.SerializeXmlNode(doc, Formatting.Indented);
 					var timeoutmessage = JObject.Parse(jsonText) as dynamic;
 					var messageKey = ((IDictionary<String, JToken>)timeoutmessage.Messages).Keys.First(k => !k.StartsWith("@xml"));
-					var message = (timeoutmessage.Messages[messageKey] as IDictionary<String, JToken>).Select(i => new KeyValuePair<string, string>(i.Key, i.Value.ToString()));
+					var message = (timeoutmessage.Messages[messageKey] as IDictionary<String, JToken>).Select(i => new KeyValuePair<string, string>(i.Key, i.Value == null ? null : i.Value.ToString()));
 
 					returnVal.Add(new TimeoutData
 						{
