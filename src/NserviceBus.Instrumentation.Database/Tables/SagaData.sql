@@ -9,6 +9,7 @@ IF OBJECT_ID('SagaData') IS NULL BEGIN
 		[ServiceName] [nvarchar](100) NOT NULL,
 		[MachineName] [nvarchar](50) NOT NULL,
 		[SagaData] [varchar](max) NOT NULL,
+		[Archive] [bit] NOT NULL
 	 CONSTRAINT [PK_SagaData] PRIMARY KEY CLUSTERED 
 	(
 		[SagaDataId] ASC

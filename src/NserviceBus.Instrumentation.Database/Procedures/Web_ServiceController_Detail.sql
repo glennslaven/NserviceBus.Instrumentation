@@ -12,7 +12,7 @@ AS
 	(
 		select SagaDataId, SagaId, ROW_NUMBER() OVER (PARTITION BY SagaType, SagaId ORDER BY CreatedOnUtc DESC) as RecordIndex
 		from sagadata
-		WHERE MachineName = @MachineName AND ServiceName = @ServiceName
+		WHERE MachineName = @MachineName AND ServiceName = @ServiceName AND Archive = 0
 	) as s	
 	where RecordIndex = 1;
 	

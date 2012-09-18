@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using Dapper;
 using NserviceBus.Instrumentation.Interfaces;
 using log4net;
@@ -36,42 +37,64 @@ namespace NserviceBus.Instrumentation.Providers.Saga
 		{
 			foreach (var serviceName in ServiceNames)
 			{
-				var sagaTypes = RavenSagaProvider.GetSagaTypes(serviceName);
-				foreach (var sagaType in sagaTypes)
+				using (var connection = GetConnection())
 				{
-					var data = RavenSagaProvider.GetSagaData(sagaType, serviceName);
-					data.ForEach(d => d.SagaDataId = Guid.NewGuid());
-
-					using (var connection = GetConnection())
-					{
-						var insertParams = data.Select(i => new { i.SagaDataId, i.SagaType, i.SagaId, i.ServiceName, i.MachineName, i.Data });
-						connection.Execute("SagaData_Insert", insertParams, commandType: CommandType.StoredProcedure);
-
-						foreach (var sagaData in data)
-						{
-							var sagaDataParam = sagaData.SagaDictionary.Select(i => new { sagaData.SagaDataId, KeyName = i.Key, KeyValue = i.Value }).ToList();
-							connection.Execute("INSERT INTO SagaDataValues (SagaDataId, KeyName, KeyValue) VALUES (@SagaDataId, @KeyName, @KeyValue)", sagaDataParam, commandType: CommandType.Text);
-						}
-					}
+					connection.Execute("UPDATE SagaData SET Archive = 1;");
 				}
-
-				var timeouts = RavenSagaProvider.GetTimeoutData(serviceName);
-				timeouts.ForEach(t => t.TimeoutDataId = Guid.NewGuid());
-
-				if (timeouts.Count > 0)
-				{
-					using (var connection = GetConnection())
-					{
-						var timeoutParams = timeouts.Select(i => new { i.TimeoutDataId, i.DocumentId, i.SagaId, i.ServiceName, i.MachineName, i.TimeoutState, i.Data, i.ExpiresUtc });
-						connection.Execute("TimeoutData_Insert", timeoutParams, commandType: CommandType.StoredProcedure);
-
-						foreach (var timeoutData in timeouts)
+						var sagaTypes = RavenSagaProvider.GetSagaTypes(serviceName);
+						foreach (var sagaType in sagaTypes)
 						{
-							var timeoutDataParam = timeoutData.MessageDictionary.Select(i => new { timeoutData.TimeoutDataId, KeyName = i.Key, KeyValue = i.Value }).ToList();
-							connection.Execute("INSERT INTO TimeoutDataValues (TimeoutDataId, KeyName, KeyValue) VALUES (@TimeoutDataId, @KeyName, @KeyValue)", timeoutDataParam, commandType: CommandType.Text);
+							var data = RavenSagaProvider.GetSagaData(sagaType, serviceName);
+							Parallel.ForEach(data, d => d.SagaDataId = Guid.NewGuid());
+
+							var insertParams = data.Select(i => new { i.SagaDataId, i.SagaType, i.SagaId, i.ServiceName, i.MachineName, i.Data });
+							Parallel.ForEach(insertParams, p =>
+								{
+									using (var connection = GetConnection())
+									{
+										connection.Execute("SagaData_Insert", p, commandType: CommandType.StoredProcedure);
+									}
+								});
+
+							Parallel.ForEach(data, sagaData =>
+								{
+									using (var connection = GetConnection())
+									{
+										var sagaDataParam = sagaData.SagaDictionary.Select(i => new { sagaData.SagaDataId, KeyName = i.Key, KeyValue = i.Value }).ToList();
+										connection.Execute("INSERT INTO SagaDataValues (SagaDataId, KeyName, KeyValue) VALUES (@SagaDataId, @KeyName, @KeyValue)", sagaDataParam, commandType: CommandType.Text);
+									}
+
+								});
+
+							
+
 						}
-					}
-				}
+
+						var timeouts = RavenSagaProvider.GetTimeoutData(serviceName);
+						timeouts.ForEach(t => t.TimeoutDataId = Guid.NewGuid());
+
+						if (timeouts.Count > 0)
+						{
+							var timeoutParams = timeouts.Select(i => new { i.TimeoutDataId, i.DocumentId, i.SagaId, i.ServiceName, i.MachineName, i.TimeoutState, i.Data, i.ExpiresUtc });
+
+							Parallel.ForEach(timeoutParams, p =>
+								{
+									using (var connection = GetConnection())
+									{
+										connection.Execute("TimeoutData_Insert", p, commandType: CommandType.StoredProcedure);
+									}
+								});
+
+							Parallel.ForEach(timeouts, timeoutData =>
+							{
+								using (var connection = GetConnection())
+								{
+									var timeoutDataParam = timeoutData.MessageDictionary.Select(i => new { timeoutData.TimeoutDataId, KeyName = i.Key, KeyValue = i.Value }).ToList();
+									connection.Execute("INSERT INTO TimeoutDataValues (TimeoutDataId, KeyName, KeyValue) VALUES (@TimeoutDataId, @KeyName, @KeyValue)", timeoutDataParam, commandType: CommandType.Text);
+								}
+							});
+
+						}
 			}
 		}
 	}

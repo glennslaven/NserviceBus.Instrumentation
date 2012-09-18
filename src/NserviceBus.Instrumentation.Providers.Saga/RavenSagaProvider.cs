@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -14,7 +15,7 @@ namespace NserviceBus.Instrumentation.Providers.Saga
 	internal class RavenSagaProvider : IRavenSagaProvider
 	{
 		private const string DocumentNameFormat = "http://localhost:8080/databases/{0}/terms/Raven/DocumentsByEntityName?field=Tag&fromValue=&pageSize=100&noCache=774278217";
-		private const string SagaDocumentFormat = "http://localhost:8080/databases/{0}/indexes/Raven/DocumentsByEntityName?query=Tag%253A{1}&start=0&pageSize=100&aggregation=None&noCache=-715965163";
+		private const string SagaDocumentFormat = "http://localhost:8080/databases/{0}/indexes/Raven/DocumentsByEntityName?query=Tag%253A{1}&start=0&pageSize=5000&aggregation=None&noCache=-715965163";
 
 		public ILog Logger { get; set; }
 
@@ -57,19 +58,21 @@ namespace NserviceBus.Instrumentation.Providers.Saga
 
 				Logger.InfoFormat("{0} {1} sagas found", sagaData["TotalResults"], sagaType);
 
-				foreach (var saga in sagaData.Results)
-				{
-					var sagaId = saga["@metadata"]["@id"].Value.Replace(sagaType.ToLower() + "/", "");
-					var originator = saga.Originator;
-					var machineName = originator.Value.Split(new[] { '@' })[1];
-					var data = saga.ToString();
+				IEnumerable<dynamic> results = sagaData.Results as IEnumerable<dynamic>;
 
-					var dic = JsonConvert.DeserializeObject<Dictionary<string, string>>(data, new JsonSerializerSettings
+				Parallel.ForEach(results, saga =>
+					{
+						var sagaId = saga["@metadata"]["@id"].Value.Replace(sagaType.ToLower() + "/", "");
+						var originator = saga.Originator;
+						var machineName = originator.Value.Split(new[] { '@' })[1];
+						var data = saga.ToString();
+
+						var dic = JsonConvert.DeserializeObject<Dictionary<string, string>>(data, new JsonSerializerSettings
 						{
-						Error = (sender, args) => { args.ErrorContext.Handled = true; }
-					}) as Dictionary<string, string>;
+							Error = (sender, args) => { args.ErrorContext.Handled = true; }
+						}) as Dictionary<string, string>;
 
-					returnVal.Add(new SagaData
+						returnVal.Add(new SagaData
 						{
 							Data = data,
 							MachineName = machineName,
@@ -77,8 +80,8 @@ namespace NserviceBus.Instrumentation.Providers.Saga
 							ServiceName = serviceName,
 							SagaType = sagaType,
 							SagaDictionary = dic
-						});					
-				}				
+						});	
+					});			
 			}
 			catch (WebException ex)
 			{
