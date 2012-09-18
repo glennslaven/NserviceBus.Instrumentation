@@ -11,7 +11,7 @@ At its core there are two parts
 
 There is a Database project (`NServiceBus.Instrumentation.Database`) which will setup a SQL Server database for persisting the instrumentation data (SQL Express will work just fine). The other projects are libraries supporting the agent.
 
-Currently the agent scans the computer it runs on for MSMQ Queues that end with `.retries` and treats them as NServiceBus Services. Alternatively there is a config section that can be added to the service to explicitly include or exclude specific queues.
+Currently the agent scans the computer it runs on for MSMQ Queues that end with `.retries` and treats them as NServiceBus Services. Alternatively there is a config section that can be added to the service to explicitly include or exclude specific queues.  There is a [class in the agent](https://github.com/glennslaven/NserviceBus.Instrumentation/blob/master/src/NserviceBus.Instrumentation.Agent/ServiceLoader.cs) where I'm having a go at interrogating the services installed on the machine instead, but it's not working yet.
 
 #This is a first release 
 
