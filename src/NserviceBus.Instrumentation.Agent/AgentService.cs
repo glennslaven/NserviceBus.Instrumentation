@@ -23,7 +23,7 @@ namespace NserviceBus.Instrumentation.Agent
 
 		public AgentService()
 		{
-			timer = new Timer(60000) { AutoReset = true };
+			timer = new Timer(3600000) { AutoReset = true };
 			timer.Elapsed += timer_Elapsed;	
 		}
 
