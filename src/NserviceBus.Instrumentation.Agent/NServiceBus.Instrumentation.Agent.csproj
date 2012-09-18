@@ -30,7 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>NserviceBus.Instrumentation.Agent.Program</StartupObject>
+    <StartupObject>NServiceBus.Instrumentation.Agent.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core">
