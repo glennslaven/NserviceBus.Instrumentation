@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace NServiceBus.Instrumentation.Interfaces
 {
 	public interface IInstrumentationProvider
 	{
 		void Instrument();
-		void Setup(IEnumerable<string> serviceNames);
+		void Setup(IEnumerable<IServiceInfo> services);
 	}
 }

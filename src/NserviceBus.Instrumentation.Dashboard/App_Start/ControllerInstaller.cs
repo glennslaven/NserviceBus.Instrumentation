@@ -13,7 +13,7 @@ namespace NServiceBus.Instrumentation.Dashboard.App_Start
 		public void Install(IWindsorContainer container, IConfigurationStore store)
 		{
 			container.Register(Component.For<HttpContextBase>().LifeStyle.PerWebRequest.UsingFactoryMethod(() => new HttpContextWrapper(HttpContext.Current)));			
-			container.Register(Component.For<ConnectionStringSettings>().LifeStyle.PerWebRequest.Instance(ConfigurationManager.ConnectionStrings["Instrumentation"]));
+			container.Register(Component.For<ConnectionStringSettings>().LifeStyle.PerWebRequest.Instance(ConfigurationManager.ConnectionStrings["DefaultConnection"]));
 
 			container.Register(AllTypes.FromThisAssembly()
 								.Where(type => typeof(IDataProvider).IsAssignableFrom(type))								

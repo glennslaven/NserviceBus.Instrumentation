@@ -14,7 +14,7 @@ namespace NServiceBus.Instrumentation.Providers.Saga
 {
 	internal class SagaInstrumentationProvider : ISagaInstrumentationProvider
 	{
-		private IEnumerable<string> ServiceNames { get; set; }
+		private IEnumerable<IServiceInfo> Services { get; set; }
 
 		public ILog Logger { get; set; }
 		public IRavenSagaProvider RavenSagaProvider { get; set; }
@@ -28,14 +28,14 @@ namespace NServiceBus.Instrumentation.Providers.Saga
 			return connection;
 		}
 
-		public void Setup(IEnumerable<string> serviceNames)
+		public void Setup(IEnumerable<IServiceInfo> services)
 		{
-			ServiceNames = serviceNames;
+			Services = services;
 		}
 
 		public void Instrument()
 		{
-			foreach (var serviceName in ServiceNames)
+			foreach (var serviceName in Services.Select(s => s.Name))
 			{
 				using (var connection = GetConnection())
 				{

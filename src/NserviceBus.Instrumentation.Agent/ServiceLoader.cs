@@ -1,23 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
 using System.Reflection;
-using NServiceBus;
+using NServiceBus.Config;
+using NServiceBus.Instrumentation.Interfaces;
 
 namespace NServiceBus.Instrumentation.Agent
 {
-	public class ServiceLoader
+	public static class ServiceLoader
 	{
-		private class ServiceInfo
+		[DebuggerDisplay("{Name}")]
+		public class ServiceInfo : IServiceInfo
 		{
 			public string Name { get; set; }
 			public string FolderPath { get; set; }
 			public string ConfigPath { get; set; }
+			public string ErrorQueue { get; set; }
+			public string AuditQueue { get; set; }
 		}
 
-		static void EnumServices(string host, string username, string password)
+		public static List<ServiceInfo> EnumServices(string host, string username, string password)
 		{
 			const string ns = @"root\cimv2";
 			const string query = "select * from Win32_Service";
@@ -46,13 +52,13 @@ namespace NServiceBus.Instrumentation.Agent
 
 					var pd = new ProxyDomain();
 
-					var fileInfos = fileInfo.Directory.GetFiles("*.dll", SearchOption.TopDirectoryOnly).ToList();
+					var fileInfos = fileInfo.Directory.GetFiles("*.dll", SearchOption.TopDirectoryOnly).Where(f => !defaultAssemblyExclusions.Any(exclusion => f.Name.ToLower().StartsWith(exclusion))).ToList();
 					fileInfos.ForEach(a =>
 					{
 						var assembly = pd.GetAssembly(a.FullName);
 						try
 						{
-							var endpointConfig = assembly.GetTypes().FirstOrDefault(t => typeof(IConfigureThisEndpoint).IsAssignableFrom(t));
+							var endpointConfig = assembly.GetTypes().Where(t => !defaultTypeExclusions.Any(exclusion => t.FullName.ToLower().StartsWith(exclusion))).FirstOrDefault(t => typeof(IConfigureThisEndpoint).IsAssignableFrom(t));
 							if (endpointConfig != null)
 							{
 								var configPath = Path.Combine(fileInfo.DirectoryName, string.Format("{0}.config", a.FullName));
@@ -63,6 +69,26 @@ namespace NServiceBus.Instrumentation.Agent
 									FolderPath = fileInfo.DirectoryName,
 									ConfigPath = File.Exists(configPath) ? configPath : null
 								};
+
+
+								var map = new ExeConfigurationFileMap() {ExeConfigFilename = serviceInfo.ConfigPath};
+
+								var config = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
+								
+								
+									
+									var faultConfig = config.GetSection("MessageForwardingInCaseOfFaultConfig") as MessageForwardingInCaseOfFaultConfig;
+								if (faultConfig != null)
+								{
+									serviceInfo.ErrorQueue = faultConfig.ErrorQueue;
+								}
+
+								var unicastBusConfig = config.GetSection("UnicastBusConfig") as UnicastBusConfig;
+								if (unicastBusConfig != null)
+								{
+									serviceInfo.AuditQueue = unicastBusConfig.ForwardReceivedMessagesTo;
+								}
+
 								nservicebusServices.Add(serviceInfo);
 							}
 						}
@@ -73,7 +99,14 @@ namespace NServiceBus.Instrumentation.Agent
 
 				}
 			}
+
+			return nservicebusServices;
 		}
+
+		static readonly IEnumerable<string> defaultAssemblyExclusions = new[] { "system.", "nhibernate.", "log4net.", "raven.server.",
+            "raven.client.", "raven.database", "raven.munin.", "raven.storage.", "raven.abstractions.", "lucene.net.", "bouncycastle.crypto",
+            "esent.interop.", "asyncctplibrary.", "nservicebus.", "castle.", "dapper.", "mysql."};
+		static readonly IEnumerable<string> defaultTypeExclusions = new[] { "raven.", "system.", "lucene.", "magnum." };
 
 		class ProxyDomain : MarshalByRefObject
 		{

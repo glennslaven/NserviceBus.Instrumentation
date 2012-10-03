@@ -14,7 +14,7 @@ namespace NServiceBus.Instrumentation.Agent
 		private const string PrivateQueuePrefix = "private$\\";
 		private readonly Timer timer;
 
-		private readonly List<NserviceBusService> nserviceBusServices = new List<NserviceBusService>();
+		private readonly List<IServiceInfo> nserviceBusServices = new List<IServiceInfo>();
 		private readonly List<IInstrumentationProvider> instrumentationProviders = new List<IInstrumentationProvider>();
 
 		public ILog Logger { get; set; }
@@ -37,50 +37,42 @@ namespace NServiceBus.Instrumentation.Agent
 
 		private void Setup()
 		{
-			foreach (InstrumentationConfig.Provider providerConfig in Config.Providers)
-			{
-				var provider = ProviderFactory.Construct(providerConfig.Name);
-				provider.Setup(nserviceBusServices.Select(s => s.Name));
-				instrumentationProviders.Add(provider);
-			}
-
-			var queues = MessageQueue.GetPrivateQueuesByMachine(".").ToList();
+			var services = ServiceLoader.EnumServices(".", "", "");
 
 			if (Config.Services.Autoload)
 			{
-				var services = queues
-					.Where(queue => queue.QueueName.EndsWith(RetriesSuffix))
-					.Select(queue => queue.QueueName.Replace(RetriesSuffix, string.Empty))
-					.Where(queueName => queues.Exists(q => q.QueueName == queueName))
-					.Select(queueName => queueName.Replace(PrivateQueuePrefix, string.Empty));
-
-				foreach (var serviceName in services)
+				foreach (var service in services)
 				{
-					if (Config.Services.Whitelist.Count > 0 && Config.Services.Whitelist.Contains(serviceName) || !Config.Services.Blacklist.Contains(serviceName))
+					if (Config.Services.Whitelist.Count > 0 && Config.Services.Whitelist.Contains(service.Name) || !Config.Services.Blacklist.Contains(service.Name))
 					{
-						nserviceBusServices.Add(new NserviceBusService
-							{
-								Name = serviceName
-							});
+						nserviceBusServices.Add(service);
 
-						Logger.InfoFormat("Service found {0}", serviceName);
+						Logger.InfoFormat("Service found {0}", service.Name);
 					}
 				}
 			}
 
-			foreach (InstrumentationConfig.Service service in Config.Services.ExplicitList)
+			foreach (InstrumentationConfig.Service configService in Config.Services.ExplicitList)
 			{
-				if (!queues.Exists(q => q.QueueName == PrivateQueuePrefix + service.Name))
+				var service = services.FirstOrDefault(s => s.Name == PrivateQueuePrefix + configService.Name);
+
+				if (service == null)
 				{
-					throw new ConfigurationErrorsException(string.Format("No queue exists for service names {0}", service.Name));
+					throw new ConfigurationErrorsException(string.Format("No queue exists for service names {0}", configService.Name));
 				}
 
-				nserviceBusServices.Add(new NserviceBusService
+				if (!nserviceBusServices.Contains(service))
 				{
-					Name = service.Name
-				});
+					nserviceBusServices.Add(service);
+					Logger.InfoFormat("Service found {0}", service.Name);
+				}
+			}
 
-				Logger.InfoFormat("Service found {0}", service.Name);
+			foreach (InstrumentationConfig.Provider providerConfig in Config.Providers)
+			{
+				var provider = ProviderFactory.Construct(providerConfig.Name);
+				provider.Setup(nserviceBusServices);
+				instrumentationProviders.Add(provider);
 			}
 		}
 
