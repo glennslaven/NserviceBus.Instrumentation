@@ -81,6 +81,8 @@ namespace NServiceBus.Instrumentation.Dashboard.Models.DataProviders.Service
 								saga.Timeouts.Add(t);
 							}
 						});
+
+					model.Errors = multi.Read<DetailDataModel.Error>().ToList();
 				}				
 
 				return model;

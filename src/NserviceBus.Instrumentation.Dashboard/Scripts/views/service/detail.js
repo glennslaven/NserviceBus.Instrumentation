@@ -7,7 +7,7 @@ NserviceBus.Instrumentation.Dashboard.Service.Detail = (function () {
 
     return {
         Bind: function (jsonModel) {
-           var sagasMapping = {
+           var baseMapping = {
                'Sagas': {
                    create: function (options) {
                         
@@ -18,6 +18,13 @@ NserviceBus.Instrumentation.Dashboard.Service.Detail = (function () {
                        return data;
                    }
                },
+               'Errors': {
+                   create: function (options) {
+                       var data = ko.mapping.fromJS(options.data);
+                       data.ShowDetails = ko.observable(false);
+                       return data;
+                   }
+               }
            };
             
            var timoutsMapping = {
@@ -32,8 +39,10 @@ NserviceBus.Instrumentation.Dashboard.Service.Detail = (function () {
 
            function viewModel(json) {
                 var self = this;
-                
-                self.Sagas = ko.mapping.fromJS(json, sagasMapping).Sagas;
+                var mapping = ko.mapping.fromJS(json, baseMapping);
+               
+                self.Sagas = mapping.Sagas;
+                self.Errors = mapping.Errors;
                 self.SelectedManually = ko.observable();               
                 self.FilterText = ko.observable();
                 self.FilterKeyName = ko.observable();                                
@@ -71,7 +80,39 @@ NserviceBus.Instrumentation.Dashboard.Service.Detail = (function () {
                 self.clearFilter = function () {
                     self.FilterText('');
                 };
+               
+                self.FilterKeys = function () {
+                    if (self.Sagas().length) {
+                        return self.Sagas()[0].Values.items;
+                    } else {
+                        return {};
+                    }
+                };
             };
+
+           ko.bindingHandlers.fadeVisible = {
+               init: function (element, valueAccessor) {
+                   // Initially set the element to be instantly visible/hidden depending on the value
+                   var value = valueAccessor();
+                   $(element).toggle(ko.utils.unwrapObservable(value)); // Use "unwrapObservable" so we can handle values that may or may not be observable
+               },
+               update: function (element, valueAccessor) {
+                   // Whenever the value subsequently changes, slowly fade the element in or out
+                   var value = valueAccessor();
+                   ko.utils.unwrapObservable(value) ? $(element).fadeIn() : $(element).fadeOut();
+               }
+           };
+            
+           ko.bindingHandlers.slideVisible = {
+               init: function (element, valueAccessor) {
+                   var value = valueAccessor();
+                   $(element).toggle(ko.utils.unwrapObservable(value));
+               },
+               update: function (element, valueAccessor) {
+                   var value = valueAccessor();
+                   ko.utils.unwrapObservable(value) ? $(element).slideDown() : $(element).slideUp();
+               }
+           };
 
            ko.applyBindings(new viewModel(jsonModel));
         }

@@ -27,7 +27,7 @@ namespace NServiceBus.Instrumentation.Dashboard.Models.DataProviders.Home
 		{
 			using (var cn = GetConnection())
 			{
-				var data = cn.Query("SELECT DISTINCT servicename, machinename FROM SagaData ORDER BY machinename, servicename");
+				var data = cn.Query("SELECT DISTINCT servicename, machinename FROM SagaData UNION SELECT DISTINCT servicename, machinename FROM Error  ORDER BY machinename, servicename");
 
 				var model = new IndexDataModel();
 
@@ -37,9 +37,9 @@ namespace NServiceBus.Instrumentation.Dashboard.Models.DataProviders.Home
 				var machine = new IndexDataModel.Machine();
 				foreach (var i in data)
 				{
-					if (i.machinename != currentMachine)
+					if (i.machinename.ToString().ToLower() != currentMachine)
 					{
-						currentMachine = i.machinename;
+						currentMachine = i.machinename.ToString().ToLower();
 
 						machine = new IndexDataModel.Machine
 							{

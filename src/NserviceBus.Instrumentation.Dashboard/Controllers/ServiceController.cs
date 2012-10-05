@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using AutoMapper;
@@ -17,6 +16,11 @@ namespace NServiceBus.Instrumentation.Dashboard.Controllers
 			Mapper.CreateMap<DetailDataModel, DetailViewModel>();
 			Mapper.CreateMap<DetailDataModel.SagaClass, DetailViewModel.SagaClass>();
 			Mapper.CreateMap<DetailDataModel.TimeoutClass, DetailViewModel.TimeoutClass>();
+			Mapper.CreateMap<DetailDataModel.Error, DetailViewModel.Error>()
+				.AfterMap((s, d) =>
+					{
+						d.ErrorDateTime = s.MessageSentTimeUtc.ToLocalTime().ToString("dd MMM yyyy HH:mm:ss");
+					});
 		}
 
         public ActionResult Detail(string id, string service)

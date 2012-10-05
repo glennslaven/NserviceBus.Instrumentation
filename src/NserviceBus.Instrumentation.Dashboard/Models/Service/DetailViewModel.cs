@@ -7,6 +7,7 @@ namespace NServiceBus.Instrumentation.Dashboard.Models.Service
 	public class DetailViewModel
 	{
 		public List<SagaClass> Sagas { get; set; }
+		public List<Error> Errors { get; set; }
 
 		public string MachineName { get; set; }
 		public string ServiceName { get; set; }
@@ -40,6 +41,15 @@ namespace NServiceBus.Instrumentation.Dashboard.Models.Service
 			public DateTime ExpiresUtc { get; set; }
 			public Guid SagaId { get; set; }
 			public Dictionary<string, string> Values { get; set; }
+		}
+
+		public class Error
+		{
+			public Guid ErrorId { get; set; }
+			public string Message { get; set; }
+			public string ErrorMessage { get; set; }
+			public string Stacktrace { get; set; }
+			public string ErrorDateTime { get; set; }
 		}
 
 		public MvcHtmlString JsonModel { get; set; }

@@ -31,4 +31,9 @@ AS
 	) as t
 	JOIN TimeoutDataValues td ON (t.TimeoutDataId = td.TimeoutDataId)
 	WHERE t.RecordIndex = 1;
+
+	SELECT [ErrorId],[Message],[ErrorMessage],[Stacktrace],[MessageSentTimeUtc]
+	FROM Error
+	WHERE MachineName = @MachineName AND ServiceName = @ServiceName
+	ORDER BY [MessageSentTimeUtc] DESC;
 	
