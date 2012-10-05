@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Messaging;
 using System.Timers;
 using NServiceBus.Instrumentation.Interfaces;
 using log4net;
@@ -10,8 +9,6 @@ namespace NServiceBus.Instrumentation.Agent
 {
 	internal class AgentService : IAgentService
 	{
-		private const string RetriesSuffix = ".retries";
-		private const string PrivateQueuePrefix = "private$\\";
 		private readonly Timer timer;
 
 		private readonly List<IServiceInfo> nserviceBusServices = new List<IServiceInfo>();
@@ -54,7 +51,7 @@ namespace NServiceBus.Instrumentation.Agent
 
 			foreach (InstrumentationConfig.Service configService in Config.Services.ExplicitList)
 			{
-				var service = services.FirstOrDefault(s => s.Name == PrivateQueuePrefix + configService.Name);
+				var service = services.FirstOrDefault(s => s.Name == configService.Name);
 
 				if (service == null)
 				{
@@ -97,11 +94,6 @@ namespace NServiceBus.Instrumentation.Agent
 		public void Continue()
 		{
 			timer.Stop();
-		}
-
-		private class NserviceBusService
-		{
-			public string Name { get; set; }
 		}
 	}
 

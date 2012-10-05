@@ -42,8 +42,9 @@
     <Reference Include="Dapper">
       <HintPath>..\packages\Dapper.1.11\lib\net40\Dapper.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
     </Reference>
     <Reference Include="NServiceBus">
       <HintPath>..\packages\NServiceBus.3.2.7\lib\net40\NServiceBus.dll</HintPath>
@@ -87,6 +88,10 @@
     <ProjectReference Include="..\NserviceBus.Instrumentation.Interfaces\NServiceBus.Instrumentation.Interfaces.csproj">
       <Project>{22fbe544-8410-4131-8c49-6ee11270e34f}</Project>
       <Name>NServiceBus.Instrumentation.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NServiceBus.Instrumentation.Providers.Error\NServiceBus.Instrumentation.Providers.Error.csproj">
+      <Project>{da2d7448-1042-4061-9eeb-96d7413ca446}</Project>
+      <Name>NServiceBus.Instrumentation.Providers.Error</Name>
     </ProjectReference>
     <ProjectReference Include="..\NserviceBus.Instrumentation.Providers.Saga\NServiceBus.Instrumentation.Providers.Saga.csproj">
       <Project>{c43234bd-5b7b-4f13-9c10-0384488cfcdc}</Project>

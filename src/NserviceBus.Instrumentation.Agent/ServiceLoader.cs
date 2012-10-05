@@ -23,6 +23,61 @@ namespace NServiceBus.Instrumentation.Agent
 			public string AuditQueue { get; set; }
 		}
 
+		static string GetEndpointName(string path)
+		{		
+			var assemblyFiles = new DirectoryInfo(path).GetFiles("*.dll", SearchOption.AllDirectories)
+				.Union(new DirectoryInfo(path).GetFiles("*.exe", SearchOption.AllDirectories));
+
+			assemblyFiles = assemblyFiles.Where(f => !defaultAssemblyExclusions.Any(exclusion => f.Name.ToLower().StartsWith(exclusion)));			
+
+			var results = new List<Assembly>();
+			foreach (var assemblyFile in assemblyFiles)
+			{
+				try
+				{
+					var pd = new ProxyDomain();
+					var assembly = pd.GetAssembly(assemblyFile.FullName);
+					assembly.GetTypes();
+					results.Add(assembly);
+				}
+				catch(Exception e)
+				{
+					
+				}
+			}
+
+
+			var endPointType = ScanAssembliesForEndpoints(results).FirstOrDefault();
+
+			if (endPointType == null)
+			{
+				throw new Exception(string.Format("No implementation of IConfigureThisEndpoint found in {0}", path));
+			}
+
+			//Stolen from https://github.com/NServiceBus/NServiceBus/blob/master/src/hosting/NServiceBus.Hosting.Windows/Program.cs
+			var endpointConfiguration = Activator.CreateInstance(endPointType);
+			var endpointName = endpointConfiguration.GetType().Namespace;
+
+			var arr = endpointConfiguration.GetType().GetCustomAttributes(typeof(EndpointNameAttribute), false);
+			if (arr.Length == 1)
+				endpointName = (arr[0] as EndpointNameAttribute).Name;
+
+			if (endpointConfiguration is INameThisEndpoint)
+				endpointName = (endpointConfiguration as INameThisEndpoint).GetName();
+
+			return endpointName;
+		}
+
+		//Stolen from https://github.com/NServiceBus/NServiceBus/blob/master/src/hosting/NServiceBus.Hosting.Windows/Program.cs
+		static IEnumerable<Type> ScanAssembliesForEndpoints(List<Assembly> assemblyScannerResults)
+		{
+			var scannableAssemblies = assemblyScannerResults;
+			return scannableAssemblies.SelectMany(assembly => assembly.GetTypes().Where(
+				t => typeof(IConfigureThisEndpoint).IsAssignableFrom(t)
+				     && t != typeof(IConfigureThisEndpoint)
+				     && !t.IsAbstract));
+		}
+
 		public static List<ServiceInfo> EnumServices(string host, string username, string password)
 		{
 			const string ns = @"root\cimv2";
@@ -42,61 +97,47 @@ namespace NServiceBus.Instrumentation.Agent
 
 			var nservicebusServices = new List<ServiceInfo>();
 
-			foreach (ManagementObject mo in searcher.Get())
+			var managementObjectCollection = searcher.Get();
+			foreach (ManagementObject mo in managementObjectCollection)
 			{
 				var path = mo.GetPropertyValue("PathName").ToString();
 				if (path.ToLower().Contains("nservicebus.host.exe"))
 				{
 					var pathArray = path.Split(new[] { '"' }, StringSplitOptions.RemoveEmptyEntries);
-					var fileInfo = new FileInfo(pathArray[0]);
+					var fileInfo = new FileInfo(pathArray[0]);										
+					var endpointName = GetEndpointName(fileInfo.Directory.FullName);
 
-					var pd = new ProxyDomain();
-
-					var fileInfos = fileInfo.Directory.GetFiles("*.dll", SearchOption.TopDirectoryOnly).Where(f => !defaultAssemblyExclusions.Any(exclusion => f.Name.ToLower().StartsWith(exclusion))).ToList();
-					fileInfos.ForEach(a =>
+					//HACK: Currently this assumes that your dll containing the IConfigureThisEndpoint implementation is named 
+					// the same as the namespace for that class
+					var configPath = Path.Combine(fileInfo.DirectoryName, string.Format("{0}.dll.config", endpointName));
+					if (!File.Exists(configPath))
 					{
-						var assembly = pd.GetAssembly(a.FullName);
-						try
-						{
-							var endpointConfig = assembly.GetTypes().Where(t => !defaultTypeExclusions.Any(exclusion => t.FullName.ToLower().StartsWith(exclusion))).FirstOrDefault(t => typeof(IConfigureThisEndpoint).IsAssignableFrom(t));
-							if (endpointConfig != null)
-							{
-								var configPath = Path.Combine(fileInfo.DirectoryName, string.Format("{0}.config", a.FullName));
+						throw new Exception(string.Format("{0} does not exist", configPath));
+					}
 
-								var serviceInfo = new ServiceInfo
-								{
-									Name = endpointConfig.Namespace,
-									FolderPath = fileInfo.DirectoryName,
-									ConfigPath = File.Exists(configPath) ? configPath : null
-								};
+					var serviceInfo = new ServiceInfo
+					{
+						Name = endpointName,
+						FolderPath = fileInfo.DirectoryName,
+						ConfigPath = configPath
+					};
 
-
-								var map = new ExeConfigurationFileMap() {ExeConfigFilename = serviceInfo.ConfigPath};
-
-								var config = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
-								
-								
+					var map = new ExeConfigurationFileMap {ExeConfigFilename = serviceInfo.ConfigPath};
+					var config = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);																
 									
-									var faultConfig = config.GetSection("MessageForwardingInCaseOfFaultConfig") as MessageForwardingInCaseOfFaultConfig;
-								if (faultConfig != null)
-								{
-									serviceInfo.ErrorQueue = faultConfig.ErrorQueue;
-								}
+					var faultConfig = config.GetSection("MessageForwardingInCaseOfFaultConfig") as MessageForwardingInCaseOfFaultConfig;
+					if (faultConfig != null)
+					{
+						serviceInfo.ErrorQueue = faultConfig.ErrorQueue;
+					}
 
-								var unicastBusConfig = config.GetSection("UnicastBusConfig") as UnicastBusConfig;
-								if (unicastBusConfig != null)
-								{
-									serviceInfo.AuditQueue = unicastBusConfig.ForwardReceivedMessagesTo;
-								}
+					var unicastBusConfig = config.GetSection("UnicastBusConfig") as UnicastBusConfig;
+					if (unicastBusConfig != null)
+					{
+						serviceInfo.AuditQueue = unicastBusConfig.ForwardReceivedMessagesTo;
+					}
 
-								nservicebusServices.Add(serviceInfo);
-							}
-						}
-						catch (Exception) { }
-					});
-
-
-
+					nservicebusServices.Add(serviceInfo);
 				}
 			}
 
@@ -106,8 +147,7 @@ namespace NServiceBus.Instrumentation.Agent
 		static readonly IEnumerable<string> defaultAssemblyExclusions = new[] { "system.", "nhibernate.", "log4net.", "raven.server.",
             "raven.client.", "raven.database", "raven.munin.", "raven.storage.", "raven.abstractions.", "lucene.net.", "bouncycastle.crypto",
             "esent.interop.", "asyncctplibrary.", "nservicebus.", "castle.", "dapper.", "mysql."};
-		static readonly IEnumerable<string> defaultTypeExclusions = new[] { "raven.", "system.", "lucene.", "magnum." };
-
+		
 		class ProxyDomain : MarshalByRefObject
 		{
 			public Assembly GetAssembly(string AssemblyPath)

@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Instrumentation
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Instrumentation.Dashboard", "NserviceBus.Instrumentation.Dashboard\NServiceBus.Instrumentation.Dashboard.csproj", "{33072A31-657C-4CEB-8035-1BB324816591}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus.Instrumentation.Providers.Error", "NServiceBus.Instrumentation.Providers.Error\NServiceBus.Instrumentation.Providers.Error.csproj", "{DA2D7448-1042-4061-9EEB-96D7413CA446}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{33072A31-657C-4CEB-8035-1BB324816591}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33072A31-657C-4CEB-8035-1BB324816591}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33072A31-657C-4CEB-8035-1BB324816591}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA2D7448-1042-4061-9EEB-96D7413CA446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA2D7448-1042-4061-9EEB-96D7413CA446}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA2D7448-1042-4061-9EEB-96D7413CA446}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA2D7448-1042-4061-9EEB-96D7413CA446}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

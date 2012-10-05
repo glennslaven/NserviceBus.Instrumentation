@@ -1,5 +1,6 @@
 ﻿using Castle.Windsor;
 using Castle.Windsor.Installer;
+using NServiceBus.Instrumentation.Providers.Error;
 using NServiceBus.Instrumentation.Providers.Saga;
 using Topshelf;
 
@@ -13,6 +14,7 @@ namespace NServiceBus.Instrumentation.Agent
 			container.Install(FromAssembly.This());
 			
 			container.Install(FromAssembly.Containing<ISagaInstrumentationProvider>());
+			container.Install(FromAssembly.Containing<IErrorInstrumentationProvider>());
 
 			HostFactory.Run(x =>                                
 			{
