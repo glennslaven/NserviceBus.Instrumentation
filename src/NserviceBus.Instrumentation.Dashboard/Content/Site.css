@@ -61,3 +61,6 @@ textarea {
 }
 
 .hidden { display: none; }
+
+.error-details { padding: 10px; }
+.error-details pre { overflow: scroll; word-break:normal}

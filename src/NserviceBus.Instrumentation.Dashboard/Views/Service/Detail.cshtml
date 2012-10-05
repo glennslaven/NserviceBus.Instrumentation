@@ -59,14 +59,15 @@
 	</div>
     <div class="tab-pane" id="errorTab">
 		<ul data-bind="foreach: Errors" class="unstyled row-fluid">
-			<li class="span3">
+			<li class="span2">
 				<p data-bind="text: ErrorDateTime"></p>
                 <p data-bind="text: ErrorMessage"></p>
 
-				<a class="btn btn-info" data-toggle="modal" data-bind="attr: { href: 'errorDetail' + ErrorId() }" role="button">Show Details</a>
-				<div data-bind="attr: { id: 'errorDetail' + ErrorId() }" class="modal" role="dialog"  aria-hidden="true">
+				<a class="btn btn-info" data-toggle="modal" data-bind="click: function(data) { $('#errorDetail' + data.ErrorId()).modal(); }" role="button">Show Details</a>
+				<div data-bind="attr: { id: 'errorDetail' + ErrorId() }" class="modal error-details" role="dialog"  aria-hidden="true" style="display: none;">
 					  <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                          <h3>Error Details</h3>
                       </div>
 					<div>
 						<p><strong>Stacktrace</strong></p>
@@ -83,9 +84,6 @@
     </div>
   </div>
 </div>
-
-
-
 
 @section scripts
 {
